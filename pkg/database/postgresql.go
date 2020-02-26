@@ -21,8 +21,6 @@ type Postgresql struct {
 	*GeneralDatabase
 
 	defaultUserName string
-
-	integerDataTypes map[string]struct{}
 }
 
 // NewPostgresql creates a new Postgresql database
@@ -33,21 +31,6 @@ func NewPostgresql(s *settings.Settings) *Postgresql {
 			driver:   dbTypeToDriverMap[s.DbType],
 		},
 		defaultUserName: "postgres",
-
-		integerDataTypes: map[string]struct{}{
-			"smallint":    {},
-			"int2":        {},
-			"integer":     {},
-			"int4":        {},
-			"bigint":      {},
-			"int8":        {},
-			"smallserial": {},
-			"serial2":     {},
-			"serial":      {},
-			"serial4":     {},
-			"bigserial":   {},
-			"serial8":     {},
-		},
 	}
 }
 
@@ -188,8 +171,7 @@ func (pg *Postgresql) GetIntegerDatatypes() []string {
 
 // IsInteger returns true if column is of type integer for the Postgres database
 func (pg *Postgresql) IsInteger(column Column) bool {
-	_, ok := pg.integerDataTypes[column.DataType]
-	return ok
+	return pg.IsStringInSlice(column.DataType, pg.GetIntegerDatatypes())
 }
 
 // GetFloatDatatypes returns the float datatypes for the Postgres database
@@ -217,6 +199,7 @@ func (pg *Postgresql) GetTemporalDatatypes() []string {
 		"timestamp",
 		"time with time zone",
 		"timestamp with time zone",
+		"timestamptz",
 		"time without time zone",
 		"timestamp without time zone",
 		"date",
