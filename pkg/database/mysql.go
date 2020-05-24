@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// MySQL implemenmts the Database interface with help of generalDatabase
+// MySQL implements the Database interface with help of generalDatabase
 type MySQL struct {
 	*GeneralDatabase
 }
@@ -34,6 +34,23 @@ func (mysql *MySQL) Connect() error {
 func (mysql *MySQL) DSN() string {
 	return fmt.Sprintf("%v:%v@tcp(%v:%v)/%v",
 		mysql.Settings.User, mysql.Settings.Pswd, mysql.Settings.Host, mysql.Settings.Port, mysql.Settings.DbName)
+}
+
+// Version reports the actual version of the MySQL database.
+func (mysql *MySQL) Version() (string, error) {
+	var version string
+	err := mysql.Get(&version, `
+		SELECT
+			CONCAT(
+				@@version, ' ', 
+				@@version_comment, ', ', 
+				@@version_compile_os, ' ', 
+				@@version_compile_machine) as version
+	`)
+	if err != nil {
+		return "", err
+	}
+	return version, nil
 }
 
 // GetDriverImportLibrary returns the golang sql driver specific fot the MySQL database
@@ -111,7 +128,7 @@ func (mysql *MySQL) IsAutoIncrement(column Column) bool {
 	return strings.Contains(column.Extra, "auto_increment")
 }
 
-// GetStringDatatypes returns the string datatypes for the MySQL database
+// GetStringDatatypes returns the string data types for the MySQL database
 func (mysql *MySQL) GetStringDatatypes() []string {
 	return []string{
 		"char",
@@ -121,12 +138,12 @@ func (mysql *MySQL) GetStringDatatypes() []string {
 	}
 }
 
-// IsString returns true if colum is of type string for the MySQL database
+// IsString returns true if column is of type string for the MySQL database
 func (mysql *MySQL) IsString(column Column) bool {
 	return mysql.IsStringInSlice(column.DataType, mysql.GetStringDatatypes())
 }
 
-// GetTextDatatypes returns the text datatypes for the MySQL database
+// GetTextDatatypes returns the text data types for the MySQL database
 func (mysql *MySQL) GetTextDatatypes() []string {
 	return []string{
 		"text",
@@ -134,12 +151,12 @@ func (mysql *MySQL) GetTextDatatypes() []string {
 	}
 }
 
-// IsText returns true if colum is of type text for the MySQL database
+// IsText returns true if column is of type text for the MySQL database
 func (mysql *MySQL) IsText(column Column) bool {
 	return mysql.IsStringInSlice(column.DataType, mysql.GetTextDatatypes())
 }
 
-// GetIntegerDatatypes returns the integer datatypes for the MySQL database
+// GetIntegerDatatypes returns the integer data types for the MySQL database
 func (mysql *MySQL) GetIntegerDatatypes() []string {
 	return []string{
 		"tinyint",
@@ -150,12 +167,12 @@ func (mysql *MySQL) GetIntegerDatatypes() []string {
 	}
 }
 
-// IsInteger returns true if colum is of type integer for the MySQL database
+// IsInteger returns true if column is of type integer for the MySQL database
 func (mysql *MySQL) IsInteger(column Column) bool {
 	return mysql.IsStringInSlice(column.DataType, mysql.GetIntegerDatatypes())
 }
 
-// GetFloatDatatypes returns the float datatypes for the MySQL database
+// GetFloatDatatypes returns the float data types for the MySQL database
 func (mysql *MySQL) GetFloatDatatypes() []string {
 	return []string{
 		"numeric",
@@ -166,12 +183,12 @@ func (mysql *MySQL) GetFloatDatatypes() []string {
 	}
 }
 
-// IsFloat returns true if colum is of type float for the MySQL database
+// IsFloat returns true if column is of type float for the MySQL database
 func (mysql *MySQL) IsFloat(column Column) bool {
 	return mysql.IsStringInSlice(column.DataType, mysql.GetFloatDatatypes())
 }
 
-// GetTemporalDatatypes returns the temporal datatypes for the MySQL database
+// GetTemporalDatatypes returns the temporal data types for the MySQL database
 func (mysql *MySQL) GetTemporalDatatypes() []string {
 	return []string{
 		"time",
@@ -182,7 +199,7 @@ func (mysql *MySQL) GetTemporalDatatypes() []string {
 	}
 }
 
-// IsTemporal returns true if colum is of type temporal for the MySQL database
+// IsTemporal returns true if column is of type temporal for the MySQL database
 func (mysql *MySQL) IsTemporal(column Column) bool {
 	return mysql.IsStringInSlice(column.DataType, mysql.GetTemporalDatatypes())
 }
