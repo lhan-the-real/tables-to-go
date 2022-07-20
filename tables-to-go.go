@@ -35,6 +35,7 @@ func NewCmdArgs() (args *CmdArgs) {
 	flag.StringVar(&args.Pswd, "p", args.Pswd, "password of user")
 	flag.StringVar(&args.DbName, "d", args.DbName, "database name")
 	flag.StringVar(&args.Schema, "s", args.Schema, "schema name")
+	flag.StringVar(&args.TableName, "tb", args.TableName, "table name")
 	flag.StringVar(&args.Host, "h", args.Host, "host of database")
 	flag.StringVar(&args.Port, "port", args.Port, "port of database host, if not specified, it will be the default ports for the supported databases")
 	flag.StringVar(&args.Socket, "socket", args.Socket, "The socket file to use for connection. If specified, takes precedence over host:port.")

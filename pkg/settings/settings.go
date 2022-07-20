@@ -159,13 +159,14 @@ type Settings struct {
 
 	DbType DBType
 
-	User   string
-	Pswd   string
-	DbName string
-	Schema string
-	Host   string
-	Port   string
-	Socket string
+	User      string
+	Pswd      string
+	DbName    string
+	Schema    string
+	TableName string
+	Host      string
+	Port      string
+	Socket    string
 
 	OutputFilePath string
 	OutputFormat   OutputFormat

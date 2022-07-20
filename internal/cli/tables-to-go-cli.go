@@ -45,6 +45,10 @@ func Run(settings *settings.Settings, db database.Database, out output.Writer) (
 	}
 
 	for _, table := range tables {
+		//  if there's specified table name, then only process the settings.TableName
+		if settings.TableName != "" && table.Name != settings.TableName {
+			continue
+		}
 
 		if settings.Verbose {
 			fmt.Printf("> processing table %q\r\n", table.Name)
