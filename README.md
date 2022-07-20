@@ -4,6 +4,13 @@
 A small and convenient tool supporting development against a changing 
 database schema.
 
+## Lhan Specified Instruction for Mysql
+1. clone the repo in https://github.com/lhan-the-real/tables-to-go
+2. run `go install ./...` in the local cloned repo root.
+3. run `tables-to-go -v -t mysql -h <dbhost> -d <dbname> -tb <table_name> -u <username> -p <password>`
+4. modify the struct based on the need, can modify the field name, delete useless fields, etc.
+5. Then copy the struct definition to the file that's needed.
+
 **Tables change, run the tool, get your structs!**
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/fraenky8/tables-to-go)](https://goreportcard.com/report/github.com/fraenky8/tables-to-go)
